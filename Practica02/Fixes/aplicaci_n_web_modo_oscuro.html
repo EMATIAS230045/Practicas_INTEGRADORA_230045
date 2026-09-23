@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicación Web - Modo Oscuro</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        },
+                        darkbg: '#0b0f19',
+                        darkcard: '#111827',
+                        darkborder: '#1f2937'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        /* Custom scrollbar for dark mode */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0b0f19; }
+        ::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #374151; }
+    </style>
+</head>
+<body class="bg-darkbg text-gray-100 min-h-screen flex flex-col antialiased">
+
+    <!-- Header Navigation -->
+    <header class="bg-darkcard border-b border-darkborder sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30">
+                        <i class="fa-solid fa-cube text-lg"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-lg tracking-wide text-white">MiAplicación</span>
+                        <span class="text-xs text-indigo-400 block -mt-1 font-medium">Modo Oscuro Pro</span>
+                    </div>
+                </div>
+
+                <!-- Navigation Links -->
+                <nav class="hidden md:flex items-center gap-1">
+                    <button class="px-3 py-2 rounded-lg text-sm font-medium text-white bg-indigo-600/20 text-indigo-400 border border-indigo-500/30">
+                        <i class="fa-solid fa-chart-pie mr-2"></i>Dashboard
+                    </button>
+                    <button class="px-3 py-2 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800 transition">
+                        <i class="fa-solid fa-list-check mr-2"></i>Registros
+                    </button>
+                    <button class="px-3 py-2 rounded-lg text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-800 transition">
+                        <i class="fa-solid fa-sliders mr-2"></i>Ajustes
+                    </button>
+                </nav>
+
+                <!-- Actions -->
+                <div class="flex items-center gap-3">
+                    <button id="btnNewRecord" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-2 shadow-lg shadow-indigo-600/20 active:scale-95">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Nuevo Registro</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Layout -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Welcome Banner -->
+        <div class="mb-8 p-6 rounded-2xl bg-gradient-to-r from-indigo-900/40 via-purple-900/20 to-darkcard border border-indigo-500/20 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-white mb-1">Panel de Control & Gestión</h1>
+                <p class="text-gray-400 text-sm">Diseño optimizado para trabajo continuo en entornos de poca luz.</p>
+            </div>
+            <div class="flex items-center gap-2 bg-darkcard/80 px-4 py-2 rounded-xl border border-darkborder">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span class="text-xs font-semibold text-gray-300">Sistema Operativo</span>
+            </div>
+        </div>
+
+        <!-- Metrics Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+            <div class="bg-darkcard p-5 rounded-2xl border border-darkborder hover:border-indigo-500/40 transition group">
+                <div class="flex items-center justify-between text-gray-400 mb-2">
+                    <span class="text-xs font-medium uppercase tracking-wider">Total Elementos</span>
+                    <i class="fa-solid fa-database text-indigo-400 group-hover:scale-110 transition"></i>
+                </div>
+                <div class="text-2xl font-bold text-white" id="statTotal">0</div>
+                <div class="text-xs text-emerald-400 mt-2 flex items-center gap-1">
+                    <i class="fa-solid fa-arrow-up"></i> Actualizado en tiempo real
+                </div>
+            </div>
+
+            <div class="bg-darkcard p-5 rounded-2xl border border-darkborder hover:border-indigo-500/40 transition group">
+                <div class="flex items-center justify-between text-gray-400 mb-2">
+                    <span class="text-xs font-medium uppercase tracking-wider">Completados</span>
+                    <i class="fa-solid fa-circle-check text-emerald-400 group-hover:scale-110 transition"></i>
+                </div>
+                <div class="text-2xl font-bold text-white" id="statCompleted">0</div>
+                <div class="text-xs text-gray-500 mt-2">Acciones procesadas</div>
+            </div>
+
+            <div class="bg-darkcard p-5 rounded-2xl border border-darkborder hover:border-indigo-500/40 transition group">
+                <div class="flex items-center justify-between text-gray-400 mb-2">
+                    <span class="text-xs font-medium uppercase tracking-wider">Pendientes</span>
+                    <i class="fa-solid fa-clock text-amber-400 group-hover:scale-110 transition"></i>
+                </div>
+                <div class="text-2xl font-bold text-white" id="statPending">0</div>
+                <div class="text-xs text-amber-400/80 mt-2">En proceso</div>
+            </div>
+
+            <div class="bg-darkcard p-5 rounded-2xl border border-darkborder hover:border-indigo-500/40 transition group">
+                <div class="flex items-center justify-between text-gray-400 mb-2">
+                    <span class="text-xs font-medium uppercase tracking-wider">Filtro Activo</span>
+                    <i class="fa-solid fa-filter text-purple-400 group-hover:scale-110 transition"></i>
+                </div>
+                <div class="text-lg font-semibold text-indigo-300 truncate" id="statFilter">Todos</div>
+                <div class="text-xs text-gray-500 mt-2">Búsqueda rápida</div>
+            </div>
+        </div>
+
+        <!-- Main Workspace Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Dynamic Form Section -->
+            <div class="bg-darkcard p-6 rounded-2xl border border-darkborder h-fit">
+                <div class="flex items-center justify-between mb-5 pb-3 border-b border-darkborder">
+                    <h2 class="font-semibold text-lg text-white flex items-center gap-2">
+                        <i class="fa-solid fa-pen-to-square text-indigo-400"></i>
+                        <span>Formulario de Entrada</span>
+                    </h2>
+                    <span class="text-xs bg-indigo-500/10 text-indigo-400 px-2 py-1 rounded-md border border-indigo-500/20">Acción</span>
+                </div>
+
+                <form id="dataForm" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Título / Nombre</label>
+                        <input type="text" id="inputTitle" required placeholder="Ej. Tarea o Elemento N° 1"
+                            class="w-full bg-darkbg border border-darkborder rounded-xl px-4 py-2.5 text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Categoría</label>
+                        <select id="inputCategory" class="w-full bg-darkbg border border-darkborder rounded-xl px-4 py-2.5 text-sm text-gray-100 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition">
+                            <option value="General">General</option>
+                            <option value="Trabajo">Trabajo</option>
+                            <option value="Personal">Personal</option>
+                            <option value="Urgente">Urgente</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Descripción</label>
+                        <textarea id="inputDesc" rows="3" placeholder="Añada detalles adicionales aquí..."
+                            class="w-full bg-darkbg border border-darkborder rounded-xl px-4 py-2.5 text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition resize-none"></textarea>
+                    </div>
+
+                    <div class="pt-2">
+                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2.5 rounded-xl transition shadow-lg shadow-indigo-600/20 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            <span>Guardar Registro</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Table / Data List Section -->
+            <div class="lg:col-span-2 bg-darkcard p-6 rounded-2xl border border-darkborder flex flex-col justify-between">
+                <div>
+                    <!-- Table Header Controls -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-darkborder">
+                        <div>
+                            <h2 class="font-semibold text-lg text-white flex items-center gap-2">
+                                <i class="fa-solid fa-list text-indigo-400"></i>
+                                <span>Lista de Registros</span>
+                            </h2>
+                        </div>
+                        <!-- Search and Filter -->
+                        <div class="flex items-center gap-2">
+                            <div class="relative">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs"></i>
+                                <input type="text" id="searchInput" placeholder="Buscar..." 
+                                    class="bg-darkbg border border-darkborder rounded-xl pl-9 pr-3 py-1.5 text-xs text-gray-200 placeholder-gray-500 focus:outline-none focus:border-indigo-500 w-36 sm:w-48 transition">
+                            </div>
+                            <button id="btnClearAll" class="text-xs bg-red-500/10 hover:bg-red-500/20 text-red-400 px-3 py-1.5 rounded-xl border border-red-500/20 transition flex items-center gap-1.5">
+                                <i class="fa-solid fa-trash-can"></i> Limpiar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Items List -->
+                    <div id="itemsContainer" class="space-y-3 max-h-[420px] overflow-y-auto pr-1">
+                        <!-- Dynamic items will be injected here -->
+                    </div>
+
+                    <!-- Empty State -->
+                    <div id="emptyState" class="hidden py-12 text-center">
+                        <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-darkbg border border-darkborder flex items-center justify-center text-gray-600">
+                            <i class="fa-solid fa-folder-open text-2xl"></i>
+                        </div>
+                        <p class="text-gray-400 font-medium text-sm">No hay datos registrados aún</p>
+                        <p class="text-gray-600 text-xs mt-1">Ingresa nuevos datos desde el formulario de la izquierda.</p>
+                    </div>
+                </div>
+
+                <!-- Footer Summary -->
+                <div class="mt-6 pt-4 border-t border-darkborder flex items-center justify-between text-xs text-gray-500">
+                    <span>Estado: Listo</span>
+                    <span id="itemCounterText">0 elementos guardados</span>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-darkcard border-t border-darkborder py-4 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-gray-500">
+            &copy; 2026 Plataforma Modo Oscuro — Estilo Personalizado
+        </div>
+    </footer>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-emerald-600 text-white px-4 py-3 rounded-xl shadow-2xl transition-all transform translate-y-20 opacity-0 flex items-center gap-3 z-50 pointer-events-none">
+        <i class="fa-solid fa-circle-check text-lg"></i>
+        <span id="toastMsg" class="text-sm font-medium">Operación realizada con éxito</span>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // State Management
+        let items = [
+            { id: 1, title: 'Revisión de Código HTML/CSS', category: 'Trabajo', desc: 'Optimización para interfaz moderna en modo oscuro.', status: 'completed', date: 'Hace 10 min' },
+            { id: 2, title: 'Implementar Funciones JS', category: 'Urgente', desc: 'Integrar interactividad dinamica y estados localizados.', status: 'pending', date: 'Hace 1 hora' }
+        ];
+
+        // DOM Elements
+        const dataForm = document.getElementById('dataForm');
+        const inputTitle = document.getElementById('inputTitle');
+        const inputCategory = document.getElementById('inputCategory');
+        const inputDesc = document.getElementById('inputDesc');
+        const itemsContainer = document.getElementById('itemsContainer');
+        const emptyState = document.getElementById('emptyState');
+        const searchInput = document.getElementById('searchInput');
+        const btnClearAll = document.getElementById('btnClearAll');
+        
+        // Stats Elements
+        const statTotal = document.getElementById('statTotal');
+        const statCompleted = document.getElementById('statCompleted');
+        const statPending = document.getElementById('statPending');
+        const itemCounterText = document.getElementById('itemCounterText');
+
+        // Notification Helper
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            toastMsg.textContent = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Render Function
+        function renderItems(filterQuery = '') {
+            const filtered = items.filter(item => 
+                item.title.toLowerCase().includes(filterQuery.toLowerCase()) ||
+                item.category.toLowerCase().includes(filterQuery.toLowerCase()) ||
+                item.desc.toLowerCase().includes(filterQuery.toLowerCase())
+            );
+
+            itemsContainer.innerHTML = '';
+
+            if (filtered.length === 0) {
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+                filtered.forEach(item => {
+                    const isCompleted = item.status === 'completed';
+                    
+                    // Category Badge Styles
+                    const badgeStyles = {
+                        'Urgente': 'bg-red-500/10 text-red-400 border-red-500/20',
+                        'Trabajo': 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20',
+                        'Personal': 'bg-purple-500/10 text-purple-400 border-purple-500/20',
+                        'General': 'bg-gray-500/10 text-gray-400 border-gray-500/20'
+                    };
+
+                    const badgeClass = badgeStyles[item.category] || badgeStyles['General'];
+
+                    const itemCard = document.createElement('div');
+                    itemCard.className = `p-4 rounded-xl border transition flex items-start justify-between gap-4 ${
+                        isCompleted ? 'bg-darkbg/50 border-darkborder opacity-70' : 'bg-darkbg border-darkborder hover:border-indigo-500/30'
+                    }`;
+
+                    itemCard.innerHTML = `
+                        <div class="flex items-start gap-3">
+                            <button onclick="toggleStatus(${item.id})" class="mt-0.5 text-lg transition ${
+                                isCompleted ? 'text-emerald-500' : 'text-gray-600 hover:text-gray-400'
+                            }">
+                                <i class="fa-${isCompleted ? 'solid' : 'regular'} fa-circle-check"></i>
+                            </button>
+                            <div>
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <h3 class="font-medium text-sm text-gray-100 ${isCompleted ? 'line-through text-gray-500' : ''}">${escapeHtml(item.title)}</h3>
+                                    <span class="text-[10px] px-2 py-0.5 rounded-md border ${badgeClass} font-semibold">${item.category}</span>
+                                </div>
+                                <p class="text-xs text-gray-400 mt-1">${escapeHtml(item.desc || 'Sin descripción adicional.')}</p>
+                                <span class="text-[10px] text-gray-600 mt-2 block">${item.date}</span>
+                            </div>
+                        </div>
+                        <button onclick="deleteItem(${item.id})" class="text-gray-500 hover:text-red-400 p-1.5 rounded-lg hover:bg-red-500/10 transition">
+                            <i class="fa-solid fa-trash-can text-sm"></i>
+                        </button>
+                    `;
+                    itemsContainer.appendChild(itemCard);
+                });
+            }
+
+            updateStats();
+        }
+
+        // Helper to Escape HTML
+        function escapeHtml(str) {
+            return str.replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        }
+
+        // Add Item
+        dataForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newItem = {
+                id: Date.now(),
+                title: inputTitle.value.trim(),
+                category: inputCategory.value,
+                desc: inputDesc.value.trim(),
+                status: 'pending',
+                date: 'Justo ahora'
+            };
+
+            items.unshift(newItem);
+            dataForm.reset();
+            renderItems(searchInput.value);
+            showToast('Nuevo registro guardado con éxito');
+        });
+
+        // Toggle Item Status
+        window.toggleStatus = function(id) {
+            items = items.map(item => {
+                if (item.id === id) {
+                    const newStatus = item.status === 'completed' ? 'pending' : 'completed';
+                    return { ...item, status: newStatus };
+                }
+                return item;
+            });
+            renderItems(searchInput.value);
+        };
+
+        // Delete Item
+        window.deleteItem = function(id) {
+            items = items.filter(item => item.id !== id);
+            renderItems(searchInput.value);
+            showToast('Registro eliminado');
+        };
+
+        // Clear All
+        btnClearAll.addEventListener('click', () => {
+            if (items.length === 0) return;
+            if (confirm('¿Estás seguro de que deseas eliminar todos los registros?')) {
+                items = [];
+                renderItems();
+                showToast('Todos los registros se han eliminado');
+            }
+        });
+
+        // Search Filter Event
+        searchInput.addEventListener('input', (e) => {
+            renderItems(e.target.value);
+        });
+
+        // Update Dashboard Stats
+        function updateStats() {
+            const total = items.length;
+            const completed = items.filter(i => i.status === 'completed').length;
+            const pending = total - completed;
+
+            statTotal.textContent = total;
+            statCompleted.textContent = completed;
+            statPending.textContent = pending;
+            itemCounterText.textContent = `${total} elemento(s) guardado(s)`;
+        }
+
+        // Initial Render
+        renderItems();
+    </script>
+</body>
+</html>
