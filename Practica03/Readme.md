@@ -86,7 +86,7 @@ Para publicar este proyecto gratuitamente en internet utilizando **GitHub Pages*
 4. **Acceder a tu sitio web:**
    * Espera de 1 a 2 minutos mientras GitHub genera la página.
    * Refresca la sección de GitHub Pages y verás un mensaje con el enlace público de tu aplicación:
-     `https://<tu-usuario>.github.io/<nombre-del-repositorio>/`
+     `https://ematias230045.github.io/Practicas_INTEGRADORA_230045/Practica03/Archify/`
 
 ---
 
