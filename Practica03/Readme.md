@@ -63,30 +63,7 @@ A continuación se muestra la interfaz del proyecto y sus principales funcionali
 
 ## 🚀 Despliegue en GitHub Pages
 
-Para publicar este proyecto gratuitamente en internet utilizando **GitHub Pages**, sigue estos sencillos pasos:
-
-1. **Subir el código a GitHub:**
-   Asegúrate de haber subido todos los archivos a un repositorio público o privado de tu cuenta en GitHub:
-   ```bash
-   git add .
-   git commit -m "feat: agregar Business Model Canvas interactivo de YouTube"
-   git push origin main
-   ```
-
-2. **Configurar GitHub Pages:**
-   * Entra a tu repositorio en GitHub.
-   * Haz clic en la pestaña **Settings** (Configuración) en la parte superior.
-   * En el menú lateral izquierdo, selecciona **Pages** (dentro de la sección *Code and automation*).
-
-3. **Seleccionar la Rama de Despliegue:**
-   * En la sección **Build and deployment** -> **Source**, selecciona **Deploy from a branch**.
-   * En el desplegable de **Branch**, elige `main` (o `master`) y selecciona la carpeta `/ (root)`.
-   * Haz clic en **Save** (Guardar).
-
-4. **Acceder a tu sitio web:**
-   * Espera de 1 a 2 minutos mientras GitHub genera la página.
-   * Refresca la sección de GitHub Pages y verás un mensaje con el enlace público de tu aplicación:
-     `https://ematias230045.github.io/Practicas_INTEGRADORA_230045/Practica03/Archify/`
+👉 **[Ver Práctica 03 en GitHub Pages](https://ematias230045.github.io/Practicas_INTEGRADORA_230045/Practica03/Archify/)**
 
 ---
 
