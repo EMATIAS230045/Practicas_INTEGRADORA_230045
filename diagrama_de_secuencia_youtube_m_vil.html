@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Práctica 06 - Diagrama de Secuencia de Pantallas YouTube Móvil</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        yt: {
+                            red: '#FF0000',
+                            dark: '#0F0F0F',
+                            card: '#1F1F1F',
+                            border: '#272727',
+                            hover: '#3F3F3F',
+                            text: '#F1F1F1',
+                            subtext: '#AAAAAA'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome Icons for graphics -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #080808;
+            color: #F1F1F1;
+        }
+        /* Custom scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f0f0f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff0000;
+        }
+        .phone-mockup {
+            box-shadow: 0 0 35px rgba(255, 0, 0, 0.15), 0 20px 40px rgba(0,0,0,0.8);
+            border: 10px solid #222;
+            border-radius: 40px;
+        }
+        .glow-red {
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+        }
+        .wireframe-element {
+            transition: all 0.2s ease;
+        }
+        .wireframe-element:hover {
+            outline: 2px dashed #FF0000;
+            cursor: pointer;
+        }
+        .connection-line {
+            stroke-dasharray: 6;
+            animation: dash 30s linear infinite;
+        }
+        @keyframes dash {
+            to { stroke-dashoffset: -1000; }
+        }
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { background: white; color: black; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col bg-yt-dark text-yt-text antialiased">
+
+    <!-- Academic Header Banner -->
+    <header class="bg-gradient-to-r from-yt-card via-black to-yt-card border-b border-yt-border sticky top-0 z-50 backdrop-blur-md bg-opacity-95 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-3 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                
+                <!-- Left Section: Title and Academic Branding -->
+                <div class="flex items-center space-x-3">
+                    <div class="bg-yt-red text-white p-2.5 rounded-xl flex items-center justify-center shadow-lg shadow-red-900/40">
+                        <i class="fa-brands fa-youtube text-2xl"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="bg-red-500/10 text-yt-red border border-red-500/30 text-xs px-2.5 py-0.5 rounded-full font-semibold">
+                                Práctica 06 • 20 Firmas
+                            </span>
+                            <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs px-2.5 py-0.5 rounded-full font-medium">
+                                Modalidad: Individual
+                            </span>
+                        </div>
+                        <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white mt-1">
+                            Diagrama de Secuencia de Pantallas Móviles: YouTube
+                        </h1>
+                    </div>
+                </div>
+
+                <!-- Right Section: Student Info & Control -->
+                <div class="flex flex-wrap items-center gap-3 text-sm bg-yt-dark/80 p-2.5 rounded-xl border border-yt-border">
+                    <div class="flex flex-col">
+                        <span class="text-xs text-yt-subtext">Estudiante:</span>
+                        <span class="font-semibold text-white">Marco A. Ramírez Hernández</span>
+                    </div>
+                    <div class="h-8 w-[1px] bg-yt-border hidden sm:block"></div>
+                    <div class="flex flex-col">
+                        <label for="student-id" class="text-xs text-yt-subtext">Matrícula:</label>
+                        <input type="text" id="student-id" value="202600123" 
+                            class="bg-yt-card text-xs text-red-400 font-mono font-bold px-2 py-0.5 rounded border border-yt-border focus:outline-none focus:border-yt-red w-28">
+                    </div>
+                    <div class="h-8 w-[1px] bg-yt-border hidden sm:block"></div>
+                    <div class="flex flex-col">
+                        <span class="text-xs text-yt-subtext">Fecha Vencimiento:</span>
+                        <span class="font-medium text-amber-400">Viernes, 10 de Octubre de 2026</span>
+                    </div>
+                    <button onclick="window.print()" class="no-print ml-auto bg-yt-card hover:bg-yt-hover text-white p-2 rounded-lg border border-yt-border transition title='Imprimir Reporte'">
+                        <i class="fa-solid fa-print"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Toolbar -->
+    <nav class="bg-yt-card/90 border-b border-yt-border no-print">
+        <div class="max-w-7xl mx-auto px-4 flex overflow-x-auto space-x-1 py-2 text-sm font-medium">
+            <button onclick="switchTab('map')" id="tab-map" class="nav-tab px-4 py-2 rounded-lg flex items-center space-x-2 bg-yt-red text-white transition">
+                <i class="fa-solid fa-sitemap"></i>
+                <span>Diagrama de Secuencia</span>
+                <span class="bg-black/30 px-2 py-0.5 text-xs rounded-full">17 Pantallas</span>
+            </button>
+            <button onclick="switchTab('simulator')" id="tab-simulator" class="nav-tab px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-yt-hover text-yt-subtext transition">
+                <i class="fa-solid fa-mobile-screen"></i>
+                <span>Simulador de Sketches</span>
+            </button>
+            <button onclick="switchTab('matrix')" id="tab-matrix" class="nav-tab px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-yt-hover text-yt-subtext transition">
+                <i class="fa-solid fa-table-list"></i>
+                <span>Matriz de Interacción</span>
+            </button>
+            <button onclick="switchTab('presentation')" id="tab-presentation" class="nav-tab px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-yt-hover text-yt-subtext transition">
+                <i class="fa-solid fa-play"></i>
+                <span>Modo Presentación</span>
+            </button>
+            <button onclick="switchTab('archify')" id="tab-archify" class="nav-tab px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-yt-hover text-yt-subtext transition">
+                <i class="fa-solid fa-robot"></i>
+                <span>Prompt Archify AI</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+
+        <!-- VIEW 1: FLOW MAP DIAGRAM -->
+        <section id="view-map" class="tab-content block space-y-6">
+            <!-- Filter Bar & Summary Header -->
+            <div class="bg-yt-card p-4 rounded-2xl border border-yt-border flex flex-col md:flex-row items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-diagram-project text-yt-red"></i>
+                        Mapa de Flujo y Diagrama de Secuencia
+                    </h2>
+                    <p class="text-xs text-yt-subtext mt-1">
+                        Organización secuencial de las 17 pantallas divididas por Roles de usuario: <b class="text-blue-400">Espectador</b>, <b class="text-emerald-400">Creador</b> y <b class="text-purple-400 font-semibold">Pantallas Compartidas</b>.
+                    </p>
+                </div>
+                <!-- Role Filter Pills -->
+                <div class="flex items-center gap-2 bg-yt-dark p-1.5 rounded-xl border border-yt-border self-start md:self-auto">
+                    <button onclick="filterNodes('all')" id="btn-filter-all" class="role-filter px-3 py-1.5 text-xs font-semibold rounded-lg bg-yt-red text-white transition">
+                        Todas (17)
+                    </button>
+                    <button onclick="filterNodes('viewer')" id="btn-filter-viewer" class="role-filter px-3 py-1.5 text-xs font-semibold rounded-lg text-yt-subtext hover:text-white transition">
+                        <i class="fa-solid fa-user text-blue-400 mr-1"></i> Espectador
+                    </button>
+                    <button onclick="filterNodes('creator')" id="btn-filter-creator" class="role-filter px-3 py-1.5 text-xs font-semibold rounded-lg text-yt-subtext hover:text-white transition">
+                        <i class="fa-solid fa-video text-emerald-400 mr-1"></i> Creador
+                    </button>
+                    <button onclick="filterNodes('shared')" id="btn-filter-shared" class="role-filter px-3 py-1.5 text-xs font-semibold rounded-lg text-yt-subtext hover:text-white transition">
+                        <i class="fa-solid fa-arrows-split-up-and-left text-purple-400 mr-1"></i> Compartidas
+                    </button>
+                </div>
+            </div>
+
+            <!-- Sequence Flow Map Layout -->
+            <div class="relative bg-yt-card/50 rounded-2xl border border-yt-border p-6 overflow-x-auto min-h-[600px] shadow-inner">
+                
+                <!-- Sequence Lanes / Columns -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 min-w-[900px]">
+                    
+                    <!-- Phase 1: Acceso e Inicio -->
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between pb-2 border-b border-yt-border">
+                            <span class="text-xs font-bold uppercase tracking-wider text-yt-subtext flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-purple-500"></span> Fase 1: Entrada & Inicio
+                            </span>
+                            <span class="text-xs bg-yt-dark px-2 py-0.5 rounded text-yt-subtext">3 Pantallas</span>
+                        </div>
+                        <div id="lane-1" class="space-y-3">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Phase 2: Consumo & Exploración (Espectador) -->
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between pb-2 border-b border-yt-border">
+                            <span class="text-xs font-bold uppercase tracking-wider text-yt-subtext flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-blue-500"></span> Fase 2: Consumo Espectador
+                            </span>
+                            <span class="text-xs bg-yt-dark px-2 py-0.5 rounded text-yt-subtext">5 Pantallas</span>
+                        </div>
+                        <div id="lane-2" class="space-y-3">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Phase 3: Gestión e Interacción Personal -->
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between pb-2 border-b border-yt-border">
+                            <span class="text-xs font-bold uppercase tracking-wider text-yt-subtext flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-amber-500"></span> Fase 3: Interacción & Menús
+                            </span>
+                            <span class="text-xs bg-yt-dark px-2 py-0.5 rounded text-yt-subtext">3 Pantallas</span>
+                        </div>
+                        <div id="lane-3" class="space-y-3">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Phase 4: Suite del Creador (YouTube Studio) -->
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between pb-2 border-b border-yt-border">
+                            <span class="text-xs font-bold uppercase tracking-wider text-yt-subtext flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Fase 4: Suite de Creador
+                            </span>
+                            <span class="text-xs bg-yt-dark px-2 py-0.5 rounded text-yt-subtext">6 Pantallas</span>
+                        </div>
+                        <div id="lane-4" class="space-y-3">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- VIEW 2: INTERACTIVE MOBILE SKETCH SIMULATOR -->
+        <section id="view-simulator" class="tab-content hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                
+                <!-- Left Column: Screen Selector & Workflow Information (5 cols) -->
+                <div class="lg:col-span-5 space-y-4">
+                    <!-- Screen Info Card -->
+                    <div class="bg-yt-card p-5 rounded-2xl border border-yt-border shadow-xl space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span id="sim-screen-code" class="text-xs font-mono font-bold bg-yt-red text-white px-2.5 py-1 rounded-md">
+                                SCR-02
+                            </span>
+                            <span id="sim-screen-role" class="text-xs px-2.5 py-1 rounded-md font-semibold bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                                Rol: Compartida
+                            </span>
+                        </div>
+
+                        <div>
+                            <h3 id="sim-screen-title" class="text-xl font-bold text-white">
+                                Feed Principal / Home
+                            </h3>
+                            <p id="sim-screen-desc" class="text-xs text-yt-subtext mt-1 leading-relaxed">
+                                Pantalla de inicio de YouTube con recomendaciones algorítmicas de video, barra superior con acciones rápidas y navegación inferior.
+                            </p>
+                        </div>
+
+                        <div class="border-t border-yt-border pt-3 space-y-2 text-xs">
+                            <div class="flex justify-between py-1">
+                                <span class="text-yt-subtext">Disparador (Trigger):</span>
+                                <span id="sim-screen-trigger" class="font-medium text-white text-right">Inicio de App / Tap Home</span>
+                            </div>
+                            <div class="flex justify-between py-1">
+                                <span class="text-yt-subtext">Acción de Usuario:</span>
+                                <span id="sim-screen-action" class="font-medium text-white text-right">Explorar / Tap en Video o Botón +</span>
+                            </div>
+                            <div class="flex justify-between py-1">
+                                <span class="text-yt-subtext">Pantalla Siguiente Siguiente:</span>
+                                <span id="sim-screen-next" class="font-medium text-red-400 text-right">SCR-04 / SCR-13 / SCR-03</span>
+                            </div>
+                        </div>
+
+                        <!-- Jump directly to related screens -->
+                        <div class="pt-2">
+                            <label class="text-xs text-yt-subtext font-semibold uppercase block mb-2">Conexiones directas de esta pantalla:</label>
+                            <div id="sim-quick-connections" class="flex flex-wrap gap-2">
+                                <!-- Populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Screens Selector Drawer -->
+                    <div class="bg-yt-card p-4 rounded-2xl border border-yt-border space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-list text-yt-red"></i> Selector de Pantallas (17)
+                            </h4>
+                            <span class="text-xs text-yt-subtext">Haz clic para cargar</span>
+                        </div>
+                        <div id="sim-screen-list" class="max-h-[320px] overflow-y-auto space-y-1.5 pr-1">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Simulated Mobile Phone Wireframe (7 cols) -->
+                <div class="lg:col-span-7 flex justify-center">
+                    <div class="phone-mockup w-full max-w-[380px] bg-yt-dark rounded-[40px] overflow-hidden border-[8px] border-[#222] shadow-2xl relative">
+                        
+                        <!-- Phone Notch / Camera area -->
+                        <div class="bg-black py-2 px-6 flex justify-between items-center text-[10px] text-yt-subtext border-b border-yt-border/50">
+                            <span class="font-mono font-bold text-white">09:41</span>
+                            <div class="w-16 h-3 bg-black rounded-full border border-yt-border mx-auto flex items-center justify-center">
+                                <div class="w-2 h-2 rounded-full bg-neutral-800"></div>
+                            </div>
+                            <div class="flex items-center space-x-1.5">
+                                <i class="fa-solid fa-wifi"></i>
+                                <i class="fa-solid fa-battery-full text-xs"></i>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Screen Canvas Content -->
+                        <div id="phone-screen-viewport" class="min-h-[620px] max-h-[650px] overflow-y-auto bg-yt-dark flex flex-col justify-between relative text-yt-text">
+                            <!-- Screen Mockup SVG/HTML injected dynamically -->
+                        </div>
+
+                        <!-- Universal Phone Home Bar -->
+                        <div class="bg-black py-2 flex justify-center">
+                            <div class="w-28 h-1 bg-white/40 rounded-full"></div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- VIEW 3: INTERACTION SEQUENCE MATRIX TABLE -->
+        <section id="view-matrix" class="tab-content hidden space-y-6">
+            <div class="bg-yt-card p-5 rounded-2xl border border-yt-border space-y-4">
+                
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-table text-yt-red"></i>
+                            Matriz Detallada de Secuencia de Interacción (17 Pantallas)
+                        </h2>
+                        <p class="text-xs text-yt-subtext mt-0.5">
+                            Especificación completa de eventos disparadores, acciones de usuario y transiciones entre pantallas.
+                        </p>
+                    </div>
+
+                    <!-- Search and Table Filter -->
+                    <div class="flex items-center gap-2">
+                        <div class="relative">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-xs text-yt-subtext"></i>
+                            <input type="text" id="matrix-search" placeholder="Buscar pantalla o rol..." 
+                                class="bg-yt-dark text-xs pl-8 pr-3 py-2 rounded-xl border border-yt-border focus:outline-none focus:border-yt-red w-48 sm:w-64 text-white"
+                                onkeyup="filterMatrixTable()">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Matrix Table -->
+                <div class="overflow-x-auto rounded-xl border border-yt-border">
+                    <table class="w-full text-left text-xs text-yt-text">
+                        <thead class="bg-yt-dark text-yt-subtext uppercase font-semibold border-b border-yt-border">
+                            <tr>
+                                <th class="py-3 px-4">Código</th>
+                                <th class="py-3 px-4">Pantalla</th>
+                                <th class="py-3 px-4">Rol</th>
+                                <th class="py-3 px-4">Disparador (Trigger)</th>
+                                <th class="py-3 px-4">Acción de Usuario</th>
+                                <th class="py-3 px-4">Siguiente Pantalla</th>
+                                <th class="py-3 px-4">Detalle / Experiencia UX</th>
+                                <th class="py-3 px-4 text-center">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="matrix-table-body" class="divide-y divide-yt-border bg-yt-card">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- VIEW 4: PRESENTATION / SIMULATION MODE -->
+        <section id="view-presentation" class="tab-content hidden space-y-6">
+            <div class="bg-yt-card p-6 rounded-2xl border border-yt-border space-y-6">
+                
+                <!-- Controller Banner -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-yt-border pb-4">
+                    <div>
+                        <span class="text-xs font-semibold text-yt-red uppercase tracking-wider">Simulación Interactiva Paso a Paso</span>
+                        <h2 class="text-xl font-bold text-white mt-1">Recorrido Guiado de la Experiencia UX</h2>
+                        <p class="text-xs text-yt-subtext mt-0.5">
+                            Selecciona una ruta de recorrido para validar la secuencia lógica de la aplicación móvil.
+                        </p>
+                    </div>
+
+                    <!-- Flow Selectors -->
+                    <div class="flex items-center gap-2">
+                        <select id="presentation-route-select" onchange="startPresentationRoute(this.value)" 
+                            class="bg-yt-dark text-white text-xs px-3 py-2 rounded-xl border border-yt-border focus:outline-none focus:border-yt-red">
+                            <option value="viewer">Ruta 1: Experiencia Espectador (Viewer Journey)</option>
+                            <option value="creator">Ruta 2: Experiencia Creador (Creator Studio Journey)</option>
+                            <option value="full">Ruta 3: Flujo Completo Ecosistema (17 Pantallas)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Presentation Active Screen Info & Controls -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    
+                    <div class="lg:col-span-6 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-yt-subtext font-semibold uppercase">Progreso del Flujo:</span>
+                            <span id="pres-step-indicator" class="text-xs font-mono bg-yt-red text-white px-2.5 py-0.5 rounded-full">Paso 1 de 8</span>
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div class="w-full bg-yt-dark h-2 rounded-full overflow-hidden border border-yt-border">
+                            <div id="pres-progress-bar" class="bg-yt-red h-full w-1/8 transition-all duration-300"></div>
+                        </div>
+
+                        <div class="bg-yt-dark p-5 rounded-xl border border-yt-border space-y-3">
+                            <div class="flex items-center gap-2">
+                                <span id="pres-screen-code" class="text-xs font-mono font-bold bg-yt-red text-white px-2 py-0.5 rounded">SCR-01</span>
+                                <h3 id="pres-screen-title" class="text-base font-bold text-white">Login / Selección de Cuenta</h3>
+                            </div>
+                            <p id="pres-screen-narrative" class="text-xs text-yt-subtext leading-relaxed">
+                                El usuario abre la aplicación por primera vez o decide cambiar de perfil. Se presentan las opciones de autenticación con cuenta de Google o ingreso como invitado.
+                            </p>
+                        </div>
+
+                        <!-- Presentation Controls Buttons -->
+                        <div class="flex items-center space-x-3 pt-2">
+                            <button onclick="prevPresStep()" id="btn-pres-prev" class="px-4 py-2 bg-yt-dark hover:bg-yt-hover text-white rounded-xl text-xs font-semibold border border-yt-border flex items-center gap-1.5 transition">
+                                <i class="fa-solid fa-arrow-left"></i> Anterior
+                            </button>
+                            <button onclick="nextPresStep()" id="btn-pres-next" class="px-5 py-2 bg-yt-red hover:bg-red-700 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 shadow-lg shadow-red-900/30 transition">
+                                Siguiente Paso <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                            <button onclick="resetPresRoute()" class="px-3 py-2 bg-yt-dark hover:bg-yt-hover text-yt-subtext rounded-xl text-xs font-semibold border border-yt-border title='Reiniciar'">
+                                <i class="fa-solid fa-rotate-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Phone Display for Presentation -->
+                    <div class="lg:col-span-6 flex justify-center">
+                        <div class="phone-mockup w-full max-w-[340px] bg-yt-dark rounded-[36px] overflow-hidden border-[6px] border-[#222] shadow-xl">
+                            <div id="pres-phone-viewport" class="min-h-[520px] max-h-[550px] overflow-y-auto bg-yt-dark flex flex-col justify-between">
+                                <!-- Rendered dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- VIEW 5: ARCHIFY AI PROMPT & JSON GENERATOR -->
+        <section id="view-archify" class="tab-content hidden space-y-6">
+            <div class="bg-yt-card p-6 rounded-2xl border border-yt-border space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-yt-border pb-4">
+                    <div>
+                        <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-robot text-yt-red"></i>
+                            Generador de Prompt & Schema JSON para Agente Archify AI
+                        </h2>
+                        <p class="text-xs text-yt-subtext mt-1">
+                            Alimenta este prompt estructurado a un agente como Archify, Mermaid, o ChatGPT para autogenerar diagramas UML de secuencia vectoriales.
+                        </p>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <button onclick="copyArchifyPrompt()" class="bg-yt-red hover:bg-red-700 text-white px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 shadow-lg transition">
+                            <i class="fa-solid fa-copy"></i> Copiar Prompt
+                        </button>
+                        <button onclick="downloadArchifyJSON()" class="bg-yt-dark hover:bg-yt-hover text-white border border-yt-border px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition">
+                            <i class="fa-solid fa-download"></i> Descargar JSON
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Structured Prompt Box -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <label class="text-xs font-semibold text-yt-subtext uppercase">Prompt formateado en Markdown / JSON Architecture:</label>
+                        <span id="copy-toast" class="text-xs text-emerald-400 font-medium hidden">
+                            <i class="fa-solid fa-check mr-1"></i> ¡Copiado al portapapeles!
+                        </span>
+                    </div>
+                    <textarea id="archify-prompt-output" readonly rows="16" 
+                        class="w-full bg-yt-dark text-xs font-mono text-emerald-300 p-4 rounded-xl border border-yt-border focus:outline-none leading-relaxed resize-none">
+                    </textarea>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Academic Signatures & Footer -->
+    <footer class="bg-yt-card border-t border-yt-border py-6 px-4 mt-auto">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-yt-subtext">
+            <div>
+                <p class="font-semibold text-white">Práctica 06: Diagrama de Secuencia de Pantallas (Sketches) de Aplicación Móvil</p>
+                <p class="mt-0.5">Estudiante: <b>Marco A. Ramírez Hernández</b> | Matrícula: <span id="footer-matrícula">202600123</span></p>
+            </div>
+            
+            <div class="flex items-center gap-6 border-t border-b md:border-none border-yt-border py-2 md:py-0">
+                <div class="text-center">
+                    <span class="block text-white font-bold">20 Firmas</span>
+                    <span class="text-[10px] uppercase">Valor Académico</span>
+                </div>
+                <div class="h-6 w-[1px] bg-yt-border"></div>
+                <div class="text-center">
+                    <span class="block text-emerald-400 font-bold">Entregado</span>
+                    <span class="text-[10px] uppercase">Estado Práctica</span>
+                </div>
+                <div class="h-6 w-[1px] bg-yt-border"></div>
+                <div class="text-center">
+                    <span class="block text-amber-400 font-bold">10/Oct/2026</span>
+                    <span class="text-[10px] uppercase">Fecha Límite</span>
+                </div>
+            </div>
+
+            <div class="text-right">
+                <p>Plataforma Estudiada: <b>YouTube Móvil</b></p>
+                <p class="text-[10px]">Modelado de Experiencia UX y Secuencia de Wireframes</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Comprehensive 17 Screens Database for YouTube Mobile
+        const SCREENS_DATA = [
+            {
+                id: 'SCR-01',
+                code: 'SCR-01',
+                title: 'Login / Selección de Cuenta',
+                role: 'Compartida',
+                roleKey: 'shared',
+                phase: 1,
+                trigger: 'Inicio de App / Tap Cambiar Cuenta',
+                action: 'Seleccionar perfil o autenticar con Google',
+                next: 'SCR-02 (Feed Principal)',
+                desc: 'Pantalla inicial de autenticación de usuario y selección de perfiles (Espectador vs Canal Creador).',
+                connections: ['SCR-02']
+            },
+            {
+                id: 'SCR-02',
+                code: 'SCR-02',
+                title: 'Feed Principal / Home',
+                role: 'Compartida',
+                roleKey: 'shared',
+                phase: 1,
+                trigger: 'Carga completa / Tap Icono Inicio',
+                action: 'Tap en Video / Buscar / Tap (+)',
+                next: 'SCR-04, SCR-03, SCR-13',
+                desc: 'Feed personalizado con recomendaciones de video, miniatura, título, canal y botón flotante (+).',
+                connections: ['SCR-03', 'SCR-04', 'SCR-06', 'SCR-07', 'SCR-13']
+            },
+            {
+                id: 'SCR-03',
+                code: 'SCR-03',
+                title: 'Búsqueda y Filtros de Video',
+                role: 'Compartida',
+                roleKey: 'shared',
+                phase: 1,
+                trigger: 'Tap Lupa en Header',
+                action: 'Escribir consulta o aplicar filtros',
+                next: 'SCR-04 (Reproductor)',
+                desc: 'Campo de texto interactivo con sugerencias en tiempo real y chips de filtro (Fecha, Tipo, Relevancia).',
+                connections: ['SCR-02', 'SCR-04']
+            },
+            {
+                id: 'SCR-04',
+                code: 'SCR-04',
+                title: 'Reproductor de Video Interactivo',
+                role: 'Espectador',
+                roleKey: 'viewer',
+                phase: 2,
+                trigger: 'Tap en Card de Video',
+                action: 'Reproducir, Dar Like, Suscribirse, Abrir Comentarios',
+                next: 'SCR-08, SCR-09, SCR-11',
+                desc: 'Reproductor de video con barra de progreso, controles, botón de Suscripción, Me Gusta y sección de comentarios.',
+                connections: ['SCR-08', 'SCR-09', 'SCR-11']
+            },
+            {
+                id: 'SCR-05',
+                code: 'SCR-05',
+                title: 'Feed de YouTube Shorts',
+                role: 'Espectador',
+                roleKey: 'viewer',
+                phase: 2,
+                trigger: 'Tap en pestaña Shorts en Nav Inferior',
+                action: 'Swipe vertical / Interacción social',
+                next: 'SCR-04, SCR-08',
+                desc: 'Reproductor vertical a pantalla completa para videos cortos con acciones rápidas a la derecha.',
+                connections: ['SCR-08', 'SCR-09']
+            },
+            {
+                id: 'SCR-06',
+                code: 'SCR-06',
+                title: 'Perfil y Menú "Tú"',
+                role: 'Compartida',
+                roleKey: 'shared',
+                phase: 3,
+                trigger: 'Tap Avatar "Tú" en Nav Inferior',
+                action: 'Ver Historial, Playlists o Acceder a YouTube Studio',
+                next: 'SCR-10, SCR-12, SCR-17',
+                desc: 'Centro personal con acceso al historial reciente, listas guardadas y conmutador a YouTube Studio.',
+                connections: ['SCR-10', 'SCR-12', 'SCR-17']
+            },
+            {
+                id: 'SCR-07',
+                code: 'SCR-07',
+                title: 'Centro de Notificaciones',
+                role: 'Compartida',
+                roleKey: 'shared',
+                phase: 3,
+                trigger: 'Tap Campana de Notificaciones',
+                action: 'Tap en Notificación de video o mención',
+                next: 'SCR-04, SCR-16',
+                desc: 'Listado cronológico de alertas sobre nuevos videos subidos por suscripciones o respuestas a comentarios.',
+                connections: ['SCR-04', 'SCR-16']
+            },
+            {
+                id: 'SCR-08',
+                code: 'SCR-08',
+                title: 'Sección u Overlay de Comentarios',
+                role: 'Espectador',
+                roleKey: 'viewer',
+                phase: 2,
+                trigger: 'Tap en caja de comentarios en SCR-04/SCR-05',
+                action: 'Escribir comentario / Responder / Ordenar',
+                next: 'SCR-04',
+                desc: 'Panel desplegable inferior para leer, responder y publicar opiniones en un video específico.',
+                connections: ['SCR-04']
+            },
+            {
+                id: 'SCR-09',
+                code: 'SCR-09',
+                title: 'Feed de Suscripciones y Canales',
+                role: 'Espectador',
+                roleKey: 'viewer',
+                phase: 2,
+                trigger: 'Tap Pestaña Suscripciones',
+                action: 'Filtrar por canal o ver publicaciones de comunidad',
+                next: 'SCR-04, SCR-17',
+                desc: 'Barra horizontal de avatares de canales seguidos y feed unificado de videos de suscripciones.',
+                connections: ['SCR-04', 'SCR-17']
+            },
+            {
+                id: 'SCR-10',
+                code: 'SCR-10',
+                title: 'Biblioteca, Historial y Playlists',
+                role: 'Espectador',
+                roleKey: 'viewer',
+                phase: 2,
+                trigger: 'Tap Ver Todo en Historial (SCR-06)',
+                action: 'Gestionar videos guardados o reproducir playlist',
+                next: 'SCR-04',
+                desc: 'Vista detallada del historial de reproducción, videos con "Me Gusta", "Ver más tarde" y listas personalizadas.',
+                connections: ['SCR-04']
+            },
+            {
+                id: 'SCR-11',
+                code: 'SCR-11',
+                title: 'Menú de Ajustes y Calidad',
+                role: 'Compartida',
+                roleKey: 'shared',
+                phase: 3,
+                trigger: 'Tap Engranaje en Video o Perfil',
+                action: 'Cambiar resolución (1080p, 720p) o velocidad',
+                next: 'SCR-04',
+                desc: 'Ajustes contextuales de reproducción de video (resolución, subtítulos, velocidad) y tema de app.',
+                connections: ['SCR-04']
+            },
+            {
+                id: 'SCR-12',
+                code: 'SCR-12',
+                title: 'Dashboard del Creador (YouTube Studio)',
+                role: 'Creador',
+                roleKey: 'creator',
+                phase: 4,
+                trigger: 'Tap en "YouTube Studio" desde SCR-06',
+                action: 'Ver resumen de rendimiento / Acceder a herramientas',
+                next: 'SCR-13, SCR-15, SCR-16',
+                desc: 'Panel general con métricas clave del canal (vistas, tiempo de reproducción, suscriptores) y accesos directos.',
+                connections: ['SCR-13', 'SCR-15', 'SCR-16']
+            },
+            {
+                id: 'SCR-13',
+                code: 'SCR-13',
+                title: 'Pantalla de Subida / Selector de Contenido',
+                role: 'Creador',
+                roleKey: 'creator',
+                phase: 4,
+                trigger: 'Tap Botón (+)',
+                action: 'Seleccionar video de galería o grabar Short',
+                next: 'SCR-14 (Editor Metadatos)',
+                desc: 'Selector de archivos multimedia de la galería móvil o cámara en vivo para publicación.',
+                connections: ['SCR-14']
+            },
+            {
+                id: 'SCR-14',
+                code: 'SCR-14',
+                title: 'Editor de Metadatos y Configuración',
+                role: 'Creador',
+                roleKey: 'creator',
+                phase: 4,
+                trigger: 'Seleccionar Video en SCR-13',
+                action: 'Ingresar título, descripción, visibilidad, miniatura',
+                next: 'SCR-12, SCR-15',
+                desc: 'Formulario de configuración del contenido: Título, Descripción, Público/Privado, Etiquetas y Audiencia.',
+                connections: ['SCR-12', 'SCR-15']
+            },
+            {
+                id: 'SCR-15',
+                code: 'SCR-15',
+                title: 'Analíticas y Métricas de Rendimiento',
+                role: 'Creador',
+                roleKey: 'creator',
+                phase: 4,
+                trigger: 'Tap pestaña Analytics en Studio',
+                action: 'Revisar gráficos de audiencias, retención e ingresos',
+                next: 'SCR-12',
+                desc: 'Gráficos detallados de alcance, fuentes de tráfico, datos demográficos e ingresos estimados.',
+                connections: ['SCR-12', 'SCR-16']
+            },
+            {
+                id: 'SCR-16',
+                code: 'SCR-16',
+                title: 'Panel de Moderación de Comentarios',
+                role: 'Creador',
+                roleKey: 'creator',
+                phase: 4,
+                trigger: 'Tap sección Comentarios en Studio',
+                action: 'Aprobar, eliminar, responder o marcar spam',
+                next: 'SCR-12',
+                desc: 'Gestor de comentarios recibidos en todos los videos con filtros de spam y revisión pendiente.',
+                connections: ['SCR-12']
+            },
+            {
+                id: 'SCR-17',
+                code: 'SCR-17',
+                title: 'Personalización y Branding del Canal',
+                role: 'Creador',
+                roleKey: 'creator',
+                phase: 4,
+                trigger: 'Tap "Editar Perfil de Canal"',
+                action: 'Actualizar banner, foto de perfil, @handle y bio',
+                next: 'SCR-06',
+                desc: 'Configuración visual de la identidad pública del canal del creador.',
+                connections: ['SCR-06', 'SCR-12']
+            }
+        ];
+
+        let activeTab = 'map';
+        let currentSimScreenId = 'SCR-02';
+        let presCurrentIndex = 0;
+        let presRoute = 'viewer';
+
+        // Presentation Routes mapping screen sequence
+        const PRESENTATION_ROUTES = {
+            viewer: ['SCR-01', 'SCR-02', 'SCR-03', 'SCR-04', 'SCR-08', 'SCR-05', 'SCR-09', 'SCR-10'],
+            creator: ['SCR-01', 'SCR-02', 'SCR-06', 'SCR-12', 'SCR-13', 'SCR-14', 'SCR-15', 'SCR-16', 'SCR-17'],
+            full: SCREENS_DATA.map(s => s.id)
+        };
+
+        // Initialize Application
+        window.addEventListener('DOMContentLoaded', () => {
+            renderFlowMap('all');
+            renderSimulatorScreen(currentSimScreenId);
+            renderSimulatorScreenList();
+            renderMatrixTable();
+            generateArchifyPrompt();
+
+            // Sync student ID with footer
+            const studentInput = document.getElementById('student-id');
+            if (studentInput) {
+                studentInput.addEventListener('input', (e) => {
+                    document.getElementById('footer-matrícula').innerText = e.target.value;
+                });
+            }
+        });
+
+        function switchTab(tabId) {
+            activeTab = tabId;
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-tab').forEach(el => {
+                el.classList.remove('bg-yt-red', 'text-white');
+                el.classList.add('hover:bg-yt-hover', 'text-yt-subtext');
+            });
+
+            document.getElementById(`view-${tabId}`).classList.remove('hidden');
+            const targetBtn = document.getElementById(`tab-${tabId}`);
+            if (targetBtn) {
+                targetBtn.classList.add('bg-yt-red', 'text-white');
+                targetBtn.classList.remove('hover:bg-yt-hover', 'text-yt-subtext');
+            }
+
+            if (tabId === 'presentation') {
+                startPresentationRoute(document.getElementById('presentation-route-select').value);
+            }
+        }
+
+        function renderFlowMap(filter) {
+            const lanes = { 1: [], 2: [], 3: [], 4: [] };
+
+            SCREENS_DATA.forEach(screen => {
+                if (filter === 'all' || screen.roleKey === filter) {
+                    lanes[screen.phase].push(screen);
+                }
+            });
+
+            for (let phase = 1; phase <= 4; phase++) {
+                const laneContainer = document.getElementById(`lane-${phase}`);
+                laneContainer.innerHTML = '';
+
+                if (lanes[phase].length === 0) {
+                    laneContainer.innerHTML = `<div class="text-xs text-yt-subtext italic p-4 text-center border border-dashed border-yt-border rounded-xl">Sin pantallas en este filtro</div>`;
+                    continue;
+                }
+
+                lanes[phase].forEach(screen => {
+                    let roleBadgeClass = 'bg-purple-500/20 text-purple-300 border-purple-500/30';
+                    if (screen.roleKey === 'viewer') roleBadgeClass = 'bg-blue-500/20 text-blue-300 border-blue-500/30';
+                    if (screen.roleKey === 'creator') roleBadgeClass = 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30';
+
+                    const card = document.createElement('div');
+                    card.className = `bg-yt-card hover:bg-yt-hover border border-yt-border p-3.5 rounded-xl cursor-pointer transition shadow-md group relative hover:border-yt-red`;
+                    card.onclick = () => {
+                        currentSimScreenId = screen.id;
+                        switchTab('simulator');
+                        renderSimulatorScreen(screen.id);
+                    };
+
+                    card.innerHTML = `
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[10px] font-mono font-bold bg-yt-red text-white px-2 py-0.5 rounded">${screen.code}</span>
+                            <span class="text-[10px] px-2 py-0.5 rounded border font-medium ${roleBadgeClass}">${screen.role}</span>
+                        </div>
+                        <h4 class="text-xs font-bold text-white group-hover:text-yt-red transition-colors">${screen.title}</h4>
+                        <p class="text-[11px] text-yt-subtext mt-1 line-clamp-2">${screen.desc}</p>
+                        <div class="mt-2.5 pt-2 border-t border-yt-border/60 flex items-center justify-between text-[10px] text-yt-subtext">
+                            <span><i class="fa-solid fa-arrow-right text-yt-red mr-1"></i> Ir a: ${screen.next.split(',')[0]}</span>
+                            <i class="fa-solid fa-chevron-right text-yt-subtext group-hover:translate-x-1 transition-transform"></i>
+                        </div>
+                    `;
+                    laneContainer.appendChild(card);
+                });
+            }
+        }
+
+        function filterNodes(filter) {
+            document.querySelectorAll('.role-filter').forEach(btn => {
+                btn.classList.remove('bg-yt-red', 'text-white');
+                btn.classList.add('text-yt-subtext');
+            });
+            const activeBtn = document.getElementById(`btn-filter-${filter}`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-yt-red', 'text-white');
+                activeBtn.classList.remove('text-yt-subtext');
+            }
+            renderFlowMap(filter);
+        }
+
+        function renderSimulatorScreenList() {
+            const listContainer = document.getElementById('sim-screen-list');
+            listContainer.innerHTML = '';
+
+            SCREENS_DATA.forEach(screen => {
+                const btn = document.createElement('button');
+                btn.className = `w-full text-left p-2.5 rounded-xl border flex items-center justify-between transition text-xs ${
+                    screen.id === currentSimScreenId 
+                        ? 'bg-yt-red/10 border-yt-red text-white font-semibold' 
+                        : 'bg-yt-dark/60 border-yt-border text-yt-subtext hover:bg-yt-hover hover:text-white'
+                }`;
+                btn.onclick = () => {
+                    currentSimScreenId = screen.id;
+                    renderSimulatorScreen(screen.id);
+                    renderSimulatorScreenList();
+                };
+
+                btn.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="font-mono text-[10px] bg-yt-dark px-1.5 py-0.5 rounded border border-yt-border text-white">${screen.code}</span>
+                        <span class="truncate">${screen.title}</span>
+                    </div>
+                    <span class="text-[10px] font-medium opacity-80">${screen.role}</span>
+                `;
+                listContainer.appendChild(btn);
+            });
+        }
+
+        function renderSimulatorScreen(screenId) {
+            const screen = SCREENS_DATA.find(s => s.id === screenId);
+            if (!screen) return;
+
+            currentSimScreenId = screenId;
+
+            // Update Left Sidebar Metadata
+            document.getElementById('sim-screen-code').innerText = screen.code;
+            document.getElementById('sim-screen-title').innerText = screen.title;
+            document.getElementById('sim-screen-desc').innerText = screen.desc;
+            document.getElementById('sim-screen-trigger').innerText = screen.trigger;
+            document.getElementById('sim-screen-action').innerText = screen.action;
+            document.getElementById('sim-screen-next').innerText = screen.next;
+
+            const roleElem = document.getElementById('sim-screen-role');
+            roleElem.innerText = `Rol: ${screen.role}`;
+            if (screen.roleKey === 'viewer') roleElem.className = 'text-xs px-2.5 py-1 rounded-md font-semibold bg-blue-500/20 text-blue-300 border border-blue-500/30';
+            else if (screen.roleKey === 'creator') roleElem.className = 'text-xs px-2.5 py-1 rounded-md font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+            else roleElem.className = 'text-xs px-2.5 py-1 rounded-md font-semibold bg-purple-500/20 text-purple-300 border border-purple-500/30';
+
+            // Quick Connections Buttons
+            const connContainer = document.getElementById('sim-quick-connections');
+            connContainer.innerHTML = '';
+            screen.connections.forEach(connId => {
+                const target = SCREENS_DATA.find(s => s.id === connId);
+                if (target) {
+                    const pill = document.createElement('button');
+                    pill.className = 'bg-yt-dark hover:bg-yt-red hover:text-white text-yt-subtext border border-yt-border text-[11px] px-2.5 py-1 rounded-lg transition flex items-center gap-1';
+                    pill.innerHTML = `<span>${target.code}: ${target.title}</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>`;
+                    pill.onclick = () => {
+                        renderSimulatorScreen(target.id);
+                        renderSimulatorScreenList();
+                    };
+                    connContainer.appendChild(pill);
+                }
+            });
+
+            // Render SVG/HTML Viewport Mockup inside Mobile Phone
+            const viewport = document.getElementById('phone-screen-viewport');
+            viewport.innerHTML = getMobileMockupHTML(screen);
+        }
+
+        function getMobileMockupHTML(screen) {
+            // Header template for YouTube
+            const youtubeHeader = `
+                <div class="px-3 py-2 bg-yt-dark border-b border-yt-border flex items-center justify-between sticky top-0 z-20">
+                    <div class="flex items-center space-x-1">
+                        <i class="fa-brands fa-youtube text-yt-red text-xl"></i>
+                        <span class="font-bold text-sm tracking-tighter text-white">YouTube</span>
+                    </div>
+                    <div class="flex items-center space-x-3 text-sm text-yt-text">
+                        <i class="fa-solid fa-tv wireframe-element p-1" title="Cast"></i>
+                        <i onclick="renderSimulatorScreen('SCR-07')" class="fa-solid fa-bell wireframe-element p-1 relative" title="Notificaciones">
+                            <span class="w-2 h-2 bg-yt-red rounded-full absolute top-1 right-1"></span>
+                        </i>
+                        <i onclick="renderSimulatorScreen('SCR-03')" class="fa-solid fa-magnifying-glass wireframe-element p-1" title="Buscar"></i>
+                        <div onclick="renderSimulatorScreen('SCR-06')" class="w-6 h-6 rounded-full bg-gradient-to-tr from-purple-500 to-red-500 text-[10px] font-bold flex items-center justify-center text-white cursor-pointer" title="Perfil">
+                            MR
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Bottom Nav template for YouTube
+            const bottomNav = (activeTab = 'home') => `
+                <div class="bg-yt-dark border-t border-yt-border grid grid-cols-5 text-[10px] text-yt-subtext py-1.5 sticky bottom-0 z-20">
+                    <button onclick="renderSimulatorScreen('SCR-02')" class="flex flex-col items-center gap-0.5 ${activeTab === 'home' ? 'text-white' : ''}">
+                        <i class="fa-solid fa-house text-base"></i>
+                        <span>Inicio</span>
+                    </button>
+                    <button onclick="renderSimulatorScreen('SCR-05')" class="flex flex-col items-center gap-0.5 ${activeTab === 'shorts' ? 'text-white' : ''}">
+                        <i class="fa-solid fa-bolt text-base"></i>
+                        <span>Shorts</span>
+                    </button>
+                    <button onclick="renderSimulatorScreen('SCR-13')" class="flex flex-col items-center justify-center">
+                        <div class="w-8 h-8 rounded-full border border-yt-subtext flex items-center justify-center text-lg text-white hover:bg-yt-hover">
+                            <i class="fa-solid fa-plus"></i>
+                        </div>
+                    </button>
+                    <button onclick="renderSimulatorScreen('SCR-09')" class="flex flex-col items-center gap-0.5 ${activeTab === 'subs' ? 'text-white' : ''}">
+                        <i class="fa-solid fa-layer-group text-base"></i>
+                        <span>Suscripciones</span>
+                    </button>
+                    <button onclick="renderSimulatorScreen('SCR-06')" class="flex flex-col items-center gap-0.5 ${activeTab === 'you' ? 'text-white' : ''}">
+                        <div class="w-5 h-5 rounded-full bg-red-600 text-[9px] font-bold flex items-center justify-center text-white">M</div>
+                        <span>Tú</span>
+                    </button>
+                </div>
+            `;
+
+            // Dynamic Mockup Generation per Screen Code
+            switch (screen.code) {
+                case 'SCR-01':
+                    return `
+                        <div class="p-6 flex flex-col justify-center items-center flex-1 space-y-6 text-center">
+                            <i class="fa-brands fa-youtube text-yt-red text-6xl"></i>
+                            <div>
+                                <h3 class="text-lg font-bold text-white">Te damos la bienvenida</h3>
+                                <p class="text-xs text-yt-subtext mt-1">Inicia sesión para personalizar tu experiencia en YouTube Móvil.</p>
+                            </div>
+                            <div class="w-full space-y-3 pt-4">
+                                <button onclick="renderSimulatorScreen('SCR-02')" class="w-full bg-white text-black font-semibold py-2.5 rounded-full text-xs flex items-center justify-center gap-2 hover:bg-gray-200">
+                                    <i class="fa-brands fa-google text-red-500"></i> Marco Ramírez (Espectador)
+                                </button>
+                                <button onclick="renderSimulatorScreen('SCR-12')" class="w-full bg-yt-card border border-yt-border text-emerald-400 font-semibold py-2.5 rounded-full text-xs flex items-center justify-center gap-2 hover:bg-yt-hover">
+                                    <i class="fa-solid fa-video"></i> Marco Channel (Modo Creador)
+                                </button>
+                            </div>
+                        </div>
+                    `;
+
+                case 'SCR-02':
+                    return `
+                        ${youtubeHeader}
+                        <div class="p-2 space-y-3 flex-1 overflow-y-auto">
+                            <!-- Topic Chips -->
+                            <div class="flex space-x-2 overflow-x-auto text-[11px] pb-1 no-scrollbar">
+                                <span class="bg-white text-black px-3 py-1 rounded-lg font-semibold">Todos</span>
+                                <span class="bg-yt-card text-white px-3 py-1 rounded-lg border border-yt-border">Programación</span>
+                                <span class="bg-yt-card text-white px-3 py-1 rounded-lg border border-yt-border">UI/UX</span>
+                                <span class="bg-yt-card text-white px-3 py-1 rounded-lg border border-yt-border">Música</span>
+                            </div>
+
+                            <!-- Video Card 1 -->
+                            <div onclick="renderSimulatorScreen('SCR-04')" class="wireframe-element rounded-xl overflow-hidden bg-yt-card border border-yt-border">
+                                <div class="relative bg-neutral-800 h-40 flex items-center justify-center">
+                                    <i class="fa-solid fa-play text-white/50 text-3xl"></i>
+                                    <span class="absolute bottom-2 right-2 bg-black/80 text-[10px] px-1.5 py-0.5 rounded text-white font-mono">14:20</span>
+                                </div>
+                                <div class="p-2.5 flex space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-blue-600 flex-shrink-0 text-xs font-bold flex items-center justify-center">YT</div>
+                                    <div class="space-y-1">
+                                        <h4 class="text-xs font-bold text-white leading-tight">Tutorial Archify: Diagramas de Secuencia Móviles 2026</h4>
+                                        <p class="text-[10px] text-yt-subtext">Canal Archify • 25 mil vistas • hace 2 días</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Video Card 2 -->
+                            <div onclick="renderSimulatorScreen('SCR-04')" class="wireframe-element rounded-xl overflow-hidden bg-yt-card border border-yt-border">
+                                <div class="relative bg-neutral-800 h-40 flex items-center justify-center">
+                                    <i class="fa-solid fa-play text-white/50 text-3xl"></i>
+                                    <span class="absolute bottom-2 right-2 bg-black/80 text-[10px] px-1.5 py-0.5 rounded text-white font-mono">08:45</span>
+                                </div>
+                                <div class="p-2.5 flex space-x-3">
+                                    <div class="w-8 h-8 rounded-full bg-emerald-600 flex-shrink-0 text-xs font-bold flex items-center justify-center">MR</div>
+                                    <div class="space-y-1">
+                                        <h4 class="text-xs font-bold text-white leading-tight">Práctica 06: Wireframes Interactivos de YouTube</h4>
+                                        <p class="text-[10px] text-yt-subtext">Marco Ramírez • 1.2 mil vistas • hace 4 horas</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        ${bottomNav('home')}
+                    `;
+
+                case 'SCR-03':
+                    return `
+                        <div class="p-3 bg-yt-dark border-b border-yt-border flex items-center gap-2">
+                            <i onclick="renderSimulatorScreen('SCR-02')" class="fa-solid fa-arrow-left text-white cursor-pointer p-1"></i>
+                            <input type="text" value="Diagramas de secuencia Archify" class="bg-yt-card text-xs text-white px-3 py-1.5 rounded-full flex-1 border border-yt-border focus:outline-none">
+                            <i class="fa-solid fa-microphone text-yt-subtext p-1"></i>
+                        </div>
+                        <div class="p-3 flex-1 space-y-3">
+                            <div class="text-[11px] text-yt-subtext font-semibold">Sugerencias de Búsqueda:</div>
+                            <div onclick="renderSimulatorScreen('SCR-04')" class="flex items-center justify-between py-2 border-b border-yt-border/40 text-xs text-white cursor-pointer">
+                                <span><i class="fa-solid fa-clock-rotate-left mr-2 text-yt-subtext"></i> diagramas de secuencia youtube</span>
+                                <i class="fa-solid fa-arrow-up-left text-yt-subtext"></i>
+                            </div>
+                            <div onclick="renderSimulatorScreen('SCR-04')" class="flex items-center justify-between py-2 border-b border-yt-border/40 text-xs text-white cursor-pointer">
+                                <span><i class="fa-solid fa-magnifying-glass mr-2 text-yt-subtext"></i> practica 06 movilidad youtube studio</span>
+                                <i class="fa-solid fa-arrow-up-left text-yt-subtext"></i>
+                            </div>
+                        </div>
+                        ${bottomNav('home')}
+                    `;
+
+                case 'SCR-04':
+                    return `
+                        <!-- Video Viewport -->
+                        <div class="bg-black h-48 relative flex items-center justify-center group">
+                            <i class="fa-solid fa-pause text-white text-3xl"></i>
+                            <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 p-2 flex flex-col gap-1">
+                                <div class="w-full bg-white/30 h-1 rounded-full">
+                                    <div class="bg-yt-red h-full w-1/3 rounded-full"></div>
+                                </div>
+                                <div class="flex justify-between text-[9px] text-white font-mono">
+                                    <span>04:15 / 14:20</span>
+                                    <i onclick="renderSimulatorScreen('SCR-11')" class="fa-solid fa-gear text-xs cursor-pointer"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Video Metadata -->
+                        <div class="p-3 space-y-3 flex-1 overflow-y-auto">
+                            <h3 class="text-sm font-bold text-white">Tutorial Archify: Diagramas de Secuencia Móviles 2026</h3>
+                            <div class="flex items-center justify-between text-[10px] text-yt-subtext">
+                                <span>25,400 vistas • hace 2 días</span>
+                                <span class="text-yt-red font-semibold">#Archify #UIUX</span>
+                            </div>
+
+                            <!-- Channel Bar -->
+                            <div class="flex items-center justify-between py-2 border-y border-yt-border">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-7 h-7 rounded-full bg-blue-600 text-[10px] font-bold flex items-center justify-center text-white">A</div>
+                                    <div>
+                                        <div class="text-xs font-bold text-white">Archify AI</div>
+                                        <div class="text-[9px] text-yt-subtext">120K suscriptores</div>
+                                    </div>
+                                </div>
+                                <button class="bg-white text-black text-xs font-bold px-3 py-1.5 rounded-full">Suscribirse</button>
+                            </div>
+
+                            <!-- Interaction Actions -->
+                            <div class="flex space-x-2 overflow-x-auto text-[11px]">
+                                <span class="bg-yt-card px-3 py-1.5 rounded-full text-white flex items-center gap-1"><i class="fa-regular fa-thumbs-up"></i> 1.2K</span>
+                                <span class="bg-yt-card px-3 py-1.5 rounded-full text-white flex items-center gap-1"><i class="fa-solid fa-share"></i> Compartir</span>
+                                <span class="bg-yt-card px-3 py-1.5 rounded-full text-white flex items-center gap-1"><i class="fa-solid fa-download"></i> Descargar</span>
+                            </div>
+
+                            <!-- Trigger Comments Overlay -->
+                            <div onclick="renderSimulatorScreen('SCR-08')" class="bg-yt-card p-2.5 rounded-xl border border-yt-border cursor-pointer space-y-1">
+                                <div class="flex justify-between items-center text-[10px]">
+                                    <span class="font-bold text-white">Comentarios (84)</span>
+                                    <i class="fa-solid fa-chevron-down text-yt-subtext"></i>
+                                </div>
+                                <p class="text-[10px] text-yt-subtext truncate">Excelente explicación del flujo de 17 pantallas para YouTube...</p>
+                            </div>
+                        </div>
+                    `;
+
+                case 'SCR-05':
+                    return `
+                        <div class="relative flex-1 bg-neutral-900 flex flex-col justify-between p-4">
+                            <!-- Top overlay -->
+                            <div class="flex justify-between text-white text-sm">
+                                <span class="font-bold">Shorts</span>
+                                <i class="fa-solid fa-camera"></i>
+                            </div>
+
+                            <!-- Right Action Rail -->
+                            <div class="absolute right-3 bottom-16 flex flex-col items-center space-y-4 text-white text-xs">
+                                <div class="flex flex-col items-center"><i class="fa-solid fa-thumbs-up text-xl"></i><span>45K</span></div>
+                                <div onclick="renderSimulatorScreen('SCR-08')" class="flex flex-col items-center cursor-pointer"><i class="fa-solid fa-comment text-xl"></i><span>890</span></div>
+                                <div class="flex flex-col items-center"><i class="fa-solid fa-share text-xl"></i><span>Compartir</span></div>
+                                <div class="w-8 h-8 rounded-full bg-red-600 border border-white"></div>
+                            </div>
+
+                            <!-- Bottom Creator Overlay -->
+                            <div class="text-white space-y-1 max-w-[80%]">
+                                <p class="font-bold text-xs">@marcoramirez_dev</p>
+                                <p class="text-[11px]">Diseñando diagramas de secuencia en HTML interactivo #YouTube #Práctica06</p>
+                            </div>
+                        </div>
+                        ${bottomNav('shorts')}
+                    `;
+
+                case 'SCR-06':
+                    return `
+                        ${youtubeHeader}
+                        <div class="p-4 space-y-4 flex-1 overflow-y-auto">
+                            <!-- User Header Card -->
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-purple-500 to-red-600 text-white font-bold flex items-center justify-center text-lg">MR</div>
+                                <div>
+                                    <h3 class="text-sm font-bold text-white">Marco A. Ramírez Hdez.</h3>
+                                    <p class="text-[10px] text-yt-subtext">@marcoramirez2026 • Ver canal</p>
+                                </div>
+                            </div>
+
+                            <!-- Studio Entry Button (Creator Switch) -->
+                            <button onclick="renderSimulatorScreen('SCR-12')" class="w-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-chart-line"></i> Ir a YouTube Studio Móvil
+                            </button>
+
+                            <!-- History Section -->
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs font-bold text-white">Historial</span>
+                                    <span onclick="renderSimulatorScreen('SCR-10')" class="text-[10px] text-blue-400 cursor-pointer">Ver todo</span>
+                                </div>
+                                <div class="flex space-x-2 overflow-x-auto pb-1">
+                                    <div class="w-28 flex-shrink-0 bg-yt-card p-1 rounded-lg border border-yt-border">
+                                        <div class="bg-neutral-800 h-16 rounded mb-1"></div>
+                                        <p class="text-[9px] text-white font-medium line-clamp-1">Diagrama Archify</p>
+                                    </div>
+                                    <div class="w-28 flex-shrink-0 bg-yt-card p-1 rounded-lg border border-yt-border">
+                                        <div class="bg-neutral-800 h-16 rounded mb-1"></div>
+                                        <p class="text-[9px] text-white font-medium line-clamp-1">YouTube Studio Pro</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        ${bottomNav('you')}
+                    `;
+
+                case 'SCR-07':
+                    return `
+                        <div class="p-3 bg-yt-dark border-b border-yt-border flex items-center justify-between">
+                            <span class="font-bold text-sm text-white">Notificaciones</span>
+                            <i class="fa-solid fa-gear text-yt-subtext"></i>
+                        </div>
+                        <div class="divide-y divide-yt-border flex-1 overflow-y-auto">
+                            <div onclick="renderSimulatorScreen('SCR-04')" class="p-3 flex space-x-3 hover:bg-yt-card cursor-pointer">
+                                <div class="w-8 h-8 rounded-full bg-blue-600 flex-shrink-0 text-xs font-bold flex items-center justify-center text-white">A</div>
+                                <div class="text-xs">
+                                    <p class="text-white"><b>Archify AI</b> subió: "Nuevo agente de diagramación de secuencia".</p>
+                                    <span class="text-[9px] text-yt-subtext">Hace 15 min</span>
+                                </div>
+                            </div>
+                            <div onclick="renderSimulatorScreen('SCR-16')" class="p-3 flex space-x-3 hover:bg-yt-card cursor-pointer">
+                                <div class="w-8 h-8 rounded-full bg-emerald-600 flex-shrink-0 text-xs font-bold flex items-center justify-center text-white">M</div>
+                                <div class="text-xs">
+                                    <p class="text-white">Nuevo comentario en tu video: "Excelente trabajo Marco!"</p>
+                                    <span class="text-[9px] text-yt-subtext">Hace 1 hora</span>
+                                </div>
+                            </div>
+                        </div>
+                        ${bottomNav('home')}
+                    `;
+
+                case 'SCR-08':
+                    return `
+                        <div class="bg-yt-card flex-1 flex flex-col justify-between rounded-t-2xl border-t border-yt-border">
+                            <div class="p-3 border-b border-yt-border flex justify-between items-center">
+                                <span class="font-bold text-xs text-white">Comentarios (84)</span>
+                                <i onclick="renderSimulatorScreen('SCR-04')" class="fa-solid fa-xmark text-white cursor-pointer"></i>
+                            </div>
+                            <div class="p-3 space-y-3 flex-1 overflow-y-auto text-xs">
+                                <div class="flex space-x-2">
+                                    <div class="w-6 h-6 rounded-full bg-purple-600 text-[9px] font-bold flex items-center justify-center">U</div>
+                                    <div>
+                                        <span class="font-bold text-white text-[10px]">@usuario2026</span>
+                                        <p class="text-yt-subtext text-[11px]">¿Cómo se genera el archivo JSON para Archify?</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-2 border-t border-yt-border flex items-center gap-2">
+                                <input type="text" placeholder="Añade un comentario..." class="bg-yt-dark text-xs px-3 py-2 rounded-full flex-1 border border-yt-border text-white">
+                                <i class="fa-solid fa-paper-plane text-yt-red p-2"></i>
+                            </div>
+                        </div>
+                    `;
+
+                case 'SCR-09':
+                    return `
+                        ${youtubeHeader}
+                        <div class="p-3 space-y-3 flex-1">
+                            <!-- Channels Circle Carousel -->
+                            <div class="flex space-x-3 overflow-x-auto pb-2 border-b border-yt-border">
+                                <div class="flex flex-col items-center space-y-1 text-[9px] text-white">
+                                    <div class="w-10 h-10 rounded-full bg-blue-600 border-2 border-yt-red flex items-center justify-center font-bold">A</div>
+                                    <span>Archify</span>
+                                </div>
+                                <div class="flex flex-col items-center space-y-1 text-[9px] text-white">
+                                    <div class="w-10 h-10 rounded-full bg-emerald-600 border-2 border-yt-red flex items-center justify-center font-bold">M</div>
+                                    <span>Marco Studio</span>
+                                </div>
+                            </div>
+                            <p class="text-xs font-bold text-white">Últimas publicaciones</p>
+                        </div>
+                        ${bottomNav('subs')}
+                    `;
+
+                case 'SCR-10':
+                    return `
+                        <div class="p-3 bg-yt-dark border-b border-yt-border flex items-center gap-2">
+                            <i onclick="renderSimulatorScreen('SCR-06')" class="fa-solid fa-arrow-left text-white cursor-pointer"></i>
+                            <span class="font-bold text-sm text-white">Biblioteca y Playlists</span>
+                        </div>
+                        <div class="p-3 space-y-3 flex-1 text-xs">
+                            <div class="bg-yt-card p-3 rounded-xl border border-yt-border flex items-center justify-between">
+                                <span class="text-white"><i class="fa-solid fa-clock mr-2 text-yt-red"></i> Ver más tarde</span>
+                                <span class="text-yt-subtext">12 videos</span>
+                            </div>
+                            <div class="bg-yt-card p-3 rounded-xl border border-yt-border flex items-center justify-between">
+                                <span class="text-white"><i class="fa-solid fa-thumbs-up mr-2 text-yt-red"></i> Videos que me gustan</span>
+                                <span class="text-yt-subtext">140 videos</span>
+                            </div>
+                        </div>
+                        ${bottomNav('you')}
+                    `;
+
+                case 'SCR-11':
+                    return `
+                        <div class="p-4 bg-yt-card rounded-t-2xl border-t border-yt-border space-y-3 flex-1 text-xs">
+                            <h4 class="font-bold text-white border-b border-yt-border pb-2">Ajustes de Reproducción</h4>
+                            <div class="flex justify-between items-center py-1">
+                                <span class="text-white">Calidad de Video</span>
+                                <span class="text-yt-red font-semibold">Auto (1080p HD)</span>
+                            </div>
+                            <div class="flex justify-between items-center py-1">
+                                <span class="text-white">Velocidad de Reproducción</span>
+                                <span class="text-yt-subtext">Normal</span>
+                            </div>
+                            <div class="flex justify-between items-center py-1">
+                                <span class="text-white">Subtítulos</span>
+                                <span class="text-yt-subtext">Español (Generados)</span>
+                            </div>
+                        </div>
+                    `;
+
+                case 'SCR-12':
+                    return `
+                        <!-- Studio Header -->
+                        <div class="p-3 bg-neutral-900 border-b border-yt-border flex justify-between items-center">
+                            <div class="flex items-center space-x-2">
+                                <i class="fa-solid fa-video text-emerald-400 text-lg"></i>
+                                <span class="font-bold text-sm text-white">YouTube Studio</span>
+                            </div>
+                            <i onclick="renderSimulatorScreen('SCR-06')" class="fa-solid fa-arrow-right-from-bracket text-yt-subtext"></i>
+                        </div>
+
+                        <div class="p-3 space-y-3 flex-1 overflow-y-auto">
+                            <!-- Channel Overview Card -->
+                            <div class="bg-yt-card p-3 rounded-xl border border-yt-border space-y-2">
+                                <span class="text-[10px] text-yt-subtext uppercase font-semibold">Resumen del Canal (Últimos 28 días)</span>
+                                <div class="grid grid-cols-2 gap-2 text-center pt-1">
+                                    <div class="bg-yt-dark p-2 rounded-lg border border-yt-border">
+                                        <span class="text-[10px] text-yt-subtext block">Vistas</span>
+                                        <span class="text-sm font-bold text-white">12.4K</span>
+                                    </div>
+                                    <div class="bg-yt-dark p-2 rounded-lg border border-yt-border">
+                                        <span class="text-[10px] text-yt-subtext block">Suscriptores</span>
+                                        <span class="text-sm font-bold text-emerald-400">+140</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Creator Quick Actions -->
+                            <div class="grid grid-cols-2 gap-2 text-xs">
+                                <button onclick="renderSimulatorScreen('SCR-15')" class="bg-yt-card p-2.5 rounded-xl border border-yt-border text-left text-white hover:border-emerald-500">
+                                    <i class="fa-solid fa-chart-pie text-emerald-400 mb-1 block"></i>
+                                    <b>Analíticas</b>
+                                </button>
+                                <button onclick="renderSimulatorScreen('SCR-16')" class="bg-yt-card p-2.5 rounded-xl border border-yt-border text-left text-white hover:border-emerald-500">
+                                    <i class="fa-solid fa-comments text-emerald-400 mb-1 block"></i>
+                                    <b>Moderación</b>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+
+                case 'SCR-13':
+                    return `
+                        <div class="p-3 bg-yt-dark border-b border-yt-border flex justify-between items-center">
+                            <span class="font-bold text-sm text-white">Crear Contenido</span>
+                            <i onclick="renderSimulatorScreen('SCR-02')" class="fa-solid fa-xmark text-white cursor-pointer"></i>
+                        </div>
+                        <div class="p-4 flex-1 space-y-3">
+                            <div onclick="renderSimulatorScreen('SCR-14')" class="bg-yt-card p-4 rounded-xl border border-yt-border hover:border-yt-red cursor-pointer flex items-center space-x-3">
+                                <i class="fa-solid fa-upload text-yt-red text-xl"></i>
+                                <div>
+                                    <h4 class="text-xs font-bold text-white">Subir un Video</h4>
+                                    <p class="text-[10px] text-yt-subtext">Selecciona un video de tu galería móvil</p>
+                                </div>
+                            </div>
+                            <div onclick="renderSimulatorScreen('SCR-14')" class="bg-yt-card p-4 rounded-xl border border-yt-border hover:border-yt-red cursor-pointer flex items-center space-x-3">
+                                <i class="fa-solid fa-bolt text-amber-400 text-xl"></i>
+                                <div>
+                                    <h4 class="text-xs font-bold text-white">Crear un Short</h4>
+                                    <p class="text-[10px] text-yt-subtext">Graba o edita video en formato vertical</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                case 'SCR-14':
+                    return `
+                        <div class="p-3 bg-yt-dark border-b border-yt-border flex justify-between items-center">
+                            <span class="font-bold text-sm text-white">Detalles del Video</span>
+                            <button onclick="renderSimulatorScreen('SCR-12')" class="bg-yt-red text-white text-xs px-3 py-1 rounded-full font-bold">Publicar</button>
+                        </div>
+                        <div class="p-3 space-y-3 flex-1 overflow-y-auto text-xs">
+                            <div class="bg-neutral-800 h-28 rounded-xl flex items-center justify-center border border-yt-border">
+                                <span class="text-yt-subtext text-[10px]">Vista previa de miniatura</span>
+                            </div>
+                            <div>
+                                <label class="text-[10px] text-yt-subtext block">Título del video:</label>
+                                <input type="text" value="Práctica 06: Diagrama de Secuencia de YouTube" class="w-full bg-yt-card text-white p-2 rounded-lg border border-yt-border">
+                            </div>
+                            <div>
+                                <label class="text-[10px] text-yt-subtext block">Visibilidad:</label>
+                                <select class="w-full bg-yt-card text-white p-2 rounded-lg border border-yt-border">
+                                    <option>Público</option>
+                                    <option>Oculto</option>
+                                    <option>Privado</option>
+                                </select>
+                            </div>
+                        </div>
+                    `;
+
+                case 'SCR-15':
+                    return `
+                        <div class="p-3 bg-yt-dark border-b border-yt-border flex items-center gap-2">
+                            <i onclick="renderSimulatorScreen('SCR-12')" class="fa-solid fa-arrow-left text-white cursor-pointer"></i>
+                            <span class="font-bold text-sm text-white">Analíticas del Canal</span>
+                        </div>
+                        <div class="p-3 space-y-3 flex-1 text-xs">
+                            <div class="bg-yt-card p-3 rounded-xl border border-yt-border space-y-2">
+                                <span class="font-bold text-white text-[11px]">Rendimiento de Vistas</span>
+                                <div class="h-24 bg-yt-dark rounded border border-yt-border flex items-end p-2 gap-1 justify-between">
+                                    <div class="bg-emerald-500 w-full h-[30%] rounded-t"></div>
+                                    <div class="bg-emerald-500 w-full h-[50%] rounded-t"></div>
+                                    <div class="bg-emerald-500 w-full h-[85%] rounded-t"></div>
+                                    <div class="bg-emerald-500 w-full h-[65%] rounded-t"></div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                case 'SCR-16':
+                    return `
+                        <div class="p-3 bg-yt-dark border-b border-yt-border flex items-center gap-2">
+                            <i onclick="renderSimulatorScreen('SCR-12')" class="fa-solid fa-arrow-left text-white cursor-pointer"></i>
+                            <span class="font-bold text-sm text-white"> Moderación de Comentarios</span>
+                        </div>
+                        <div class="p-3 space-y-2 flex-1 text-xs">
+                            <div class="bg-yt-card p-2.5 rounded-xl border border-yt-border space-y-2">
+                                <p class="text-white font-semibold text-[11px]">"Gran trabajo en el diagrama!"</p>
+                                <div class="flex justify-end gap-2 text-[10px]">
+                                    <button class="bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded border border-emerald-500/30">Aprobar</button>
+                                    <button class="bg-red-500/20 text-red-300 px-2 py-0.5 rounded border border-red-500/30">Eliminar</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                case 'SCR-17':
+                    return `
+                        <div class="p-3 bg-yt-dark border-b border-yt-border flex items-center justify-between">
+                            <span class="font-bold text-sm text-white"> Branding del Canal</span>
+                            <button onclick="renderSimulatorScreen('SCR-06')" class="text-xs text-yt-red font-bold">Guardar</button>
+                        </div>
+                        <div class="p-3 space-y-3 flex-1 text-xs">
+                            <div class="bg-neutral-800 h-20 rounded-xl border border-yt-border flex items-center justify-center text-yt-subtext text-[10px]">
+                                Banner del Canal (1024x576)
+                            </div>
+                            <div>
+                                <label class="text-[10px] text-yt-subtext block">Nombre del Canal:</label>
+                                <input type="text" value="Marco Ramírez Dev" class="w-full bg-yt-card text-white p-2 rounded-lg border border-yt-border">
+                            </div>
+                        </div>
+                    `;
+
+                default:
+                    return `<div class="p-6 text-center text-xs text-yt-subtext">Sketch en construcción</div>`;
+            }
+        }
+
+        function renderMatrixTable() {
+            const tbody = document.getElementById('matrix-table-body');
+            tbody.innerHTML = '';
+
+            SCREENS_DATA.forEach(screen => {
+                let roleColor = 'text-purple-400 bg-purple-500/10 border-purple-500/30';
+                if (screen.roleKey === 'viewer') roleColor = 'text-blue-400 bg-blue-500/10 border-blue-500/30';
+                if (screen.roleKey === 'creator') roleColor = 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30';
+
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-yt-hover/50 transition';
+                tr.innerHTML = `
+                    <td class="py-3 px-4 font-mono font-bold text-yt-red">${screen.code}</td>
+                    <td class="py-3 px-4 font-semibold text-white">${screen.title}</td>
+                    <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] border font-medium ${roleColor}">${screen.role}</span></td>
+                    <td class="py-3 px-4 text-yt-subtext">${screen.trigger}</td>
+                    <td class="py-3 px-4 text-white">${screen.action}</td>
+                    <td class="py-3 px-4 text-red-400 font-mono">${screen.next}</td>
+                    <td class="py-3 px-4 text-yt-subtext max-w-xs truncate">${screen.desc}</td>
+                    <td class="py-3 px-4 text-center">
+                        <button onclick="currentSimScreenId='${screen.id}'; switchTab('simulator'); renderSimulatorScreen('${screen.id}');" class="bg-yt-dark hover:bg-yt-red hover:text-white border border-yt-border text-yt-subtext px-2.5 py-1 rounded text-[10px] transition">
+                            Ver Sketch
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function filterMatrixTable() {
+            const query = document.getElementById('matrix-search').value.toLowerCase();
+            const rows = document.querySelectorAll('#matrix-table-body tr');
+
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(query) ? '' : 'none';
+            });
+        }
+
+        function startPresentationRoute(routeKey) {
+            presRoute = routeKey;
+            presCurrentIndex = 0;
+            updatePresStep();
+        }
+
+        function updatePresStep() {
+            const routeArray = PRESENTATION_ROUTES[presRoute] || PRESENTATION_ROUTES.viewer;
+            const currentId = routeArray[presCurrentIndex];
+            const screen = SCREENS_DATA.find(s => s.id === currentId);
+
+            if (!screen) return;
+
+            document.getElementById('pres-step-indicator').innerText = `Paso ${presCurrentIndex + 1} de ${routeArray.length}`;
+            const progressPct = ((presCurrentIndex + 1) / routeArray.length) * 100;
+            document.getElementById('pres-progress-bar').style.width = `${progressPct}%`;
+
+            document.getElementById('pres-screen-code').innerText = screen.code;
+            document.getElementById('pres-screen-title').innerText = screen.title;
+            document.getElementById('pres-screen-narrative').innerText = screen.desc;
+
+            // Render view inside presentation phone
+            document.getElementById('pres-phone-viewport').innerHTML = getMobileMockupHTML(screen);
+        }
+
+        function nextPresStep() {
+            const routeArray = PRESENTATION_ROUTES[presRoute];
+            if (presCurrentIndex < routeArray.length - 1) {
+                presCurrentIndex++;
+                updatePresStep();
+            }
+        }
+
+        function prevPresStep() {
+            if (presCurrentIndex > 0) {
+                presCurrentIndex--;
+                updatePresStep();
+            }
+        }
+
+        function resetPresRoute() {
+            presCurrentIndex = 0;
+            updatePresStep();
+        }
+
+        function generateArchifyPrompt() {
+            const studentId = document.getElementById('student-id')?.value || "202600123";
+            const promptData = {
+                metadata: {
+                    practica: "Práctica 06 - Diagrama de Secuencia de Pantallas",
+                    estudiante: "Marco A. Ramírez Hernández",
+                    matricula: studentId,
+                    plataforma: "YouTube Móvil",
+                    rolesCount: 2,
+                    screensCount: SCREENS_DATA.length
+                },
+                archifyPrompt: `AGENTE ARCHIFY AI - GENERADOR DE DIAGRAMA DE SECUENCIA UX MÓVIL
+Por favor, genera un diagrama de secuencia de interacciones vectoriales para la aplicación móvil YouTube Móvil con 2 roles principales (Espectador y Creador) basándote en la siguiente especificación de 17 pantallas:`,
+                screens: SCREENS_DATA.map(s => ({
+                    code: s.code,
+                    title: s.title,
+                    role: s.role,
+                    trigger: s.trigger,
+                    action: s.action,
+                    nextScreen: s.next,
+                    description: s.desc
+                }))
+            };
+
+            const markdownPrompt = `# ARCHIFY AI AGENT INSTRUCTION & ARCHITECTURE SCHEMA
+**Proyecto:** Diagrama de Secuencia YouTube Móvil (Práctica 06)
+**Estudiante:** Marco A. Ramírez Hernández (${studentId})
+
+## ESPECIFICACIÓN DE ROLES:
+1. **Espectador (Viewer):** Usuario enfocado en buscar, reproducir y comentar contenido.
+2. **Creador de Contenido (Creator):** Usuario gestor de canal (YouTube Studio) para subida, métricas y moderación.
+
+## MATRIZ DE SECUENCIA DE PANTALLAS (17 NODOS):
+${SCREENS_DATA.map(s => `
+- [${s.code}] ${s.title}
+  * Rol: ${s.role}
+  * Trigger: ${s.trigger}
+  * User Action: ${s.action}
+  * Next Screen: ${s.next}
+`).join('')}
+
+## JSON DATA SCHEMA FOR ARCHIFY / MERMAID:
+\`\`\`json
+${JSON.stringify(promptData, null, 2)}
+\`\`\`
+`;
+
+            document.getElementById('archify-prompt-output').value = markdownPrompt;
+        }
+
+        function copyArchifyPrompt() {
+            const textarea = document.getElementById('archify-prompt-output');
+            textarea.select();
+            document.execCommand('copy');
+
+            const toast = document.getElementById('copy-toast');
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 3000);
+        }
+
+        function downloadArchifyJSON() {
+            const content = document.getElementById('archify-prompt-output').value;
+            const blob = new Blob([content], { type: 'text/markdown;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `YouTube_Mobile_Sequence_Practica06_MarcoRamirez.md`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
