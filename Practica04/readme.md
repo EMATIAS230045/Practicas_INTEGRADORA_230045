@@ -4,6 +4,8 @@ Este repositorio contiene la documentación visual e interactiva de **Proyecto L
 
 El archivo principal `ModeloCanvas.html` presenta una interfaz web interactiva que sintetiza la estrategia de negocio (Business Model Canvas), el modelo 3D del personaje y la arquitectura técnica del sitio.
 
+👉 **[ACCEDER A LA APLICACIÓN INTERACTIVA (HTML) AQUÍ](https://ematias230045.github.io/Practicas_INTEGRADORA_230045/Practica04/index.html)**
+
 ---
 
 ## 🚀 Características principales

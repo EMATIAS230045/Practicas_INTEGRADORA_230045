@@ -10,7 +10,6 @@ Puedes interactuar directamente con el simulador y la documentación visual haci
 
 👉 **[ACCEDER A LA APLICACIÓN INTERACTIVA (HTML) AQUÍ](https://ematias230045.github.io/Practicas_INTEGRADORA_230045/Practica06/index.html)**
 
-*(Reemplaza `COLOCA_AQUI_TU_ENLACE` con la URL de tu servidor, GitHub Pages, Vercel, Netlify o la ruta de tu archivo).*
 
 ---
 
