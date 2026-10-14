@@ -4,6 +4,8 @@ Este repositorio contiene la herramienta interactiva de visualización de **Role
 
 El objetivo de este módulo (correspondiente a la **Práctica 05**) es mapear tanto a las entidades narrativas que habitan la metrópolis de Lumen como a los perfiles técnicos y plataformas propuestas para el ecosistema del juego.
 
+👉 **[ACCEDER A LA APLICACIÓN INTERACTIVA (HTML) AQUÍ](https://ematias230045.github.io/Practicas_INTEGRADORA_230045/Practica05/index.html)**
+
 ---
 
 ## 🚀 Características principales
