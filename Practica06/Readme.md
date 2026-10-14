@@ -91,3 +91,25 @@ La aplicación HTML incluye 5 vistas y herramientas interactivas integradas en u
 1. Descarga el archivo `diagrama_de_secuencia_youtube_m_vil.html`.
 2. Haz doble clic sobre el archivo para abrirlo en cualquier navegador web moderno (Google Chrome, Mozilla Firefox, Edge, Safari).
 3. No requiere instalación de servidores ni dependencias externas (todo se ejecuta del lado del cliente).
+
+## Evidencias:
+
+### 1. Mapa de Flujo y Diagrama de Secuencia
+![Mapa de Flujo y Diagrama de Secuencia](/Practica06/images/1.png)
+*Vista general de la arquitectura de las 17 pantallas organizadas en 4 fases secuenciales (Entrada & Inicio, Consumo Espectador, Interacción & Menús, y Suite de Creador) con filtros por roles de usuario (Espectador, Creador y Compartidas).*
+
+### 2. Simulador de Sketches Interactivo
+![Simulador de Sketches](/Practica06/images/2.png)
+*Interfaz del simulador móvil interactivo que muestra el wireframe en tiempo real de la pantalla seleccionada (SCR-02 Feed Principal / Home), especificando sus disparadores (triggers), acciones de usuario y conexiones directas.*
+
+### 3. Matriz Detallada de Secuencia de Interacción
+![Matriz de Interacción](/Practica06/images/3.png)
+*Tabla con la especificación técnica completa de las 17 pantallas, detallando el código, rol asignado, evento disparador, acción del usuario, pantalla siguiente y resumen de la experiencia UX.*
+
+### 4. Modo Presentación y Recorrido Guiado
+![Modo Presentación](/Practica06/images/4.png)
+*Modulo de simulación paso a paso que permite validar los flujos de experiencia de usuario (Viewer Journey y Creator Journey) con indicación de progreso, explicación del paso actual y prototipo móvil funcional.*
+
+### 5. Generador de Prompt y Schema JSON para Archify AI
+![Prompt Archify AI](/Practica06/images/5.png)
+*Herramienta de generación automática de arquitectura de software en formato Markdown y JSON, lista para copiarse o descargarse para alimentar agentes de IA como Archify o herramientas como Mermaid.*
